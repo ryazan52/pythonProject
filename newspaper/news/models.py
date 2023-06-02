@@ -1,12 +1,12 @@
 from django.db import models
 from datetime import datetime
-from django.contrib.auth.models import User
+import django.contrib.auth.models
 from django.db.models import Sum
 from django.urls import reverse
 
 
 class Author(models.Model):
-    author_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    author_user = models.OneToOneField(django.contrib.auth.models.User, on_delete=models.CASCADE)
     author_rating = models.IntegerField(default=0)
 
     def update_rating(self):
@@ -25,7 +25,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField(max_length=64, unique=True)
-    subscribers = models.ManyToManyField(User, related_name='categories')
+    subscribers = models.ManyToManyField(django.contrib.auth.models.User, related_name='categories')
 
     def __str__(self):
         return self.category_name.title()
@@ -83,7 +83,7 @@ class Comment(models.Model):
     comment_rate = models.SmallIntegerField(default=0)
     comment_value = models.TextField(max_length=512)
     comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_author = models.ForeignKey(django.contrib.auth.models.User, on_delete=models.CASCADE)
 
     def like(self):
         self.comment_rate += 1
